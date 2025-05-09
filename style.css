@@ -1,0 +1,85 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #f7f7f7;
+}
+
+header {
+    background-color: #6faf9f;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+header input, header select, header button {
+    margin: 5px;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    display: flex;
+}
+
+header button {
+    background-color: #ff5733;
+    color: white;
+    cursor: pointer;
+}
+
+header button:hover {
+    background-color: #e74c3c;
+}
+
+main {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    padding: 20px;
+}
+
+.pokemon-card {
+    background-color: rgb(143, 199, 201);
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    text-align: center;
+    width: 200px;
+}
+
+.image-container img {
+    width: 100px;
+    height: 100px;
+}
+
+.favorite-btn {
+    background-color: gold;
+    border: none;
+    padding: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* 🌙 Mode sombre */
+body.dark-mode {
+    background-color: #1e1e1e;
+    color: #312727;
+}
+
+header.dark-mode {
+    background-color: #444;
+}
+
+.pokemon-card.dark-mode {
+    background-color: #829493;
+    color: white;
+    box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1);
+}
+
+
+button.dark-mode {
+    background-color: #888;
+    color: white;
+}
+

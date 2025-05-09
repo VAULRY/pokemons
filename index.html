@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Les Pokemons</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Les Pokemons</h1>
+      <input
+        type="text"
+        id="searchInput"
+        placeholder="Rechercher un Pokémon..."
+      />
+      <select id="typeFilter">
+        <option value="">Tous les types</option>
+        <option value="fire">Feu</option>
+        <option value="water">Eau</option>
+        <option value="grass">Plante</option>
+        <option value="electric">Électrique</option>
+        <!-- Ajoute d'autres types si nécessaire -->
+      </select>
+
+      <button id="sortNameAsc">🔼 Nom (A-Z)</button>
+      <button id="sortNameDesc">🔽 Nom (Z-A)</button>
+      <button id="sortWeightAsc">🔼 Poids (Petit à Grand)</button>
+      <button id="sortWeightDesc">🔽 Poids (Grand à Petit)</button>
+
+      <label for="displayRange">Nombre de Pokémon affichés :</label>
+      <input type="range" id="displayRange" min="5" max="50" value="12" />
+      <span id="rangeValue">12</span>
+
+      <button id="toggleTheme">🌙 Mode sombre</button>
+    </header>
+
+    <main id="pokemonContainer">
+      <!-- Les cartes Pokémon seront générées ici -->
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
