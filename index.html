@@ -1,51 +1,77 @@
 <!DOCTYPE html>
 <html lang="fr">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Les Pokemons</title>
-    <link rel="stylesheet" href="style.css" />
-  </head>
-  <body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Les Pokémons</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
     <header>
-      <h1>Les Pokemons</h1>
-      <input
-        type="text"
-        id="searchInput"
-        placeholder="Rechercher un Pokémon..."
-      />
-      <select id="pokemonSelect">
-    <option value="">-- Sélectionner un Pokémon --</option>
+    <div class="header-top">
+        <h1>Les Pokémons</h1>
+        <nav>
+            <a href="index.html">🏠 Accueil</a>
+            <a href="favoris.html">⭐ Voir mes favoris</a>
+        </nav>
+    </div>
+
+    <div class="header-search">
+        <input type="text" id="searchInput" placeholder="Rechercher un Pokémon..." />
+        <select id="pokemonSelect">
+            <option value="">-- Sélectionner un Pokémon --</option>
+        </select>
+        <select id="typeFilter">
+    <option value="">-- Sélectionner un type --</option>
 </select>
 
+    </div>
 
-      <select id="typeFilter">
-        <option value="">Tous les types</option>
-        <option value="fire">Feu</option>
-        <option value="water">Eau</option>
-        <option value="grass">Plante</option>
-        <option value="electric">Électrique</option>
-        <!-- Ajoute d'autres types si nécessaire -->
-      </select>
+    <div class="header-sort">
+        <button id="sortNameAsc">🔼 Nom (A-Z)</button>
+        <button id="sortNameDesc">🔽 Nom (Z-A)</button>
+        <button id="sortWeightAsc">🔼 Poids (Petit à Grand)</button>
+        <button id="sortWeightDesc">🔽 Poids (Grand à Petit)</button>
+    </div>
 
-      <button id="sortNameAsc">🔼 Nom (A-Z)</button>
-      <button id="sortNameDesc">🔽 Nom (Z-A)</button>
-      <button id="sortWeightAsc">🔼 Poids (Petit à Grand)</button>
-      <button id="sortWeightDesc">🔽 Poids (Grand à Petit)</button>
+    <div class="header-display">
+        <label for="displayRange">Nombre de Pokémon affichés :</label>
+        <input type="range" id="displayRange" min="5" max="50" value="12" />
+        <span id="rangeValue">12</span>
+    </div>
 
-      <label for="displayRange">Nombre de Pokémon affichés :</label>
-      <input type="range" id="displayRange" min="5" max="50" value="12" />
-      <span id="rangeValue">12</span>
+    <div class="header-actions">
+        <button id="toggleTheme">🌙 Mode nuit</button>
+        <button id="resetFilter">🔄 Réinitialiser</button>
+    </div>
+</header>
 
-      <button id="toggleTheme">🌙 Mode sombre</button>
-      <button id="resetFilter">Réinitialiser</button>
 
-    </header>
 
     <main id="pokemonContainer">
-      <!-- Les cartes Pokémon seront générées ici -->
+        <!-- Les cartes Pokémon seront générées ici -->
+         
+         
     </main>
+<!-- Fenêtre modale pour afficher les détails du Pokémon -->
+<div id="modal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn">&times;</span>
+        <h2 id="modalTitle"></h2>
+        <img id="modalImage" src="" alt="">
+        <p id="modalInfo"></p>
+        <h3>Statistiques :</h3>
+        <ul id="modalStats"></ul>
+        <h3>Capacités :</h3>
+        <ul id="modalAbilities"></ul>
+    
+
+    </div>
+</div>
 
     <script src="script.js"></script>
-  </body>
+</body>
 </html>
+
+
+

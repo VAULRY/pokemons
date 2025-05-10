@@ -5,31 +5,79 @@ body {
 }
 
 header {
-    background-color: #6faf9f;
-    padding: 10px;
+    background: linear-gradient(135deg, #ff6b6b, #ffa07a);
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
     display: flex;
+    flex-direction: column; /* 🔥 Organise en colonnes */
     align-items: center;
     justify-content: center;
-    flex-wrap: wrap;
+    text-align: center;
 }
 
-header input, header select, header button {
-    margin: 5px;
-    padding: 10px;
+.header-top {
+    display: flex;
+    justify-content: space-between; /* 🔥 Alignement du titre et du menu */
+    width: 100%;
+}
+
+.header-top h1 {
+    margin: 0;
+    font-size: 24px;
+    color: white;
+}
+header p {
+    font-size: 18px; /* 🔥 Augmente la taille du texte */
+    font-weight: bold; /* 🌟 Rends le texte plus visible */
+    color: white; /* 🎨 Assure un bon contraste */
+}
+
+
+nav a {
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+    margin: 0 10px;
+    padding: 8px 12px;
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.2);
+    transition: background 0.3s ease-in-out;
+}
+
+.header-search,
+.header-sort,
+.header-display,
+.header-actions {
+    margin-top: 10px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.header-search input,
+.header-search select {
+    padding: 8px;
     border-radius: 5px;
     border: none;
-    display: flex;
 }
 
-header button {
+button {
+    padding: 10px;
+    border-radius: 5px;
     background-color: #ff5733;
     color: white;
+    font-weight: bold;
     cursor: pointer;
+    border: none;
+    transition: transform 0.2s ease-in-out;
 }
 
-header button:hover {
+button:hover {
     background-color: #e74c3c;
+    transform: scale(1.05);
 }
+
 
 main {
     display: flex;
@@ -37,28 +85,54 @@ main {
     justify-content: center;
     gap: 20px;
     padding: 20px;
+    p{
+        font-size: 20px;
+    }
 }
 
 .pokemon-card {
-    background-color: rgb(143, 199, 201);
-    border-radius: 10px;
+    background: linear-gradient(135deg, #87CEEB, #4682B4); /* Bleu dynamique */
+    border-radius: 15px;
     padding: 15px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
     text-align: center;
     width: 200px;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeIn 0.5s forwards;
+    transition: all 0.3s ease-in-out;
+}
+
+.pokemon-card:hover {
+    transform: scale(1.05); /* Effet de zoom */
+}
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .image-container img {
-    width: 100px;
-    height: 100px;
+    width: 120px;
+    height: 120px;
+    transition: transform 0.2s ease-in-out;
 }
 
+.image-container img:hover {
+    
+    transform: rotate(-360deg); /* Légère rotation au survol */
+}
+
+
 .favorite-btn {
-    background-color: gold;
+    background-color: red;
     border: none;
     padding: 5px;
     cursor: pointer;
     font-weight: bold;
+    font-size: 18px;
 }
 
 /* 🌙 Mode sombre */
@@ -83,3 +157,83 @@ button.dark-mode {
     color: white;
 }
 
+/* 🔥 Style de la modale */
+.modal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+ transform: translate(-50%, -50%); /* 🔥 Centre parfaitement la fenêtre */
+ width: 400px;
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    text-align: center;
+    p{
+        font-size: 25px;
+    }
+
+
+}
+
+.modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    text-align: center;
+    width: 350px;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.modal h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.modal img {
+    width: 120px;
+    height: 120px;
+    margin-bottom: 10px;
+}
+
+.modal ul {
+    list-style: none;
+    padding: 0;
+}
+
+.modal ul li {
+    font-size: 25px;
+    background: #e3f2fd;
+    padding: 5px;
+    margin: 5px;
+    border-radius: 5px;
+}
+
+/* 🔥 Effet d'apparition */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* 🔥 Bouton de fermeture */
+.close-btn {
+    color: red;
+    font-size: 44px;
+    font-weight: bold;
+    cursor: pointer;
+    position: absolute;
+    top: 15px;
+    right: 35px;
+}
+.pokemon-info button{
+    margin: 5px;
+    font-size: 20px;
+}
