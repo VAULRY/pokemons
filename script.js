@@ -2,6 +2,8 @@ const url = "https://pokeapi.co/api/v2/pokemon?limit=151";
 
 const pokemonContainer = document.getElementById("pokemonContainer");
 const searchInput = document.getElementById("searchInput");
+const pokemonSelect = document.getElementById("pokemonSelect"); // Ajout du select
+const resetFilterBtn = document.getElementById("resetFilter"); // Bouton de reset
 const sortNameAsc = document.getElementById("sortNameAsc");
 const sortNameDesc = document.getElementById("sortNameDesc");
 const sortWeightAsc = document.getElementById("sortWeightAsc");
@@ -19,16 +21,12 @@ var selectValue = "";
 
 // Gestion des favoris avec localStorage
 let favorites = localStorage.getItem("favorites");
-if (favorites == null) {
-    favorites = [];
-} else {
-    favorites = JSON.parse(favorites);
-}
+favorites = favorites ? JSON.parse(favorites) : [];
 
 function toggleFavorite(name) {
     let index = favorites.indexOf(name);
-    if (index == -1) {
-        favorites[favorites.length] = name;
+    if (index === -1) {
+        favorites.push(name);
     } else {
         favorites.splice(index, 1);
     }
@@ -37,89 +35,82 @@ function toggleFavorite(name) {
 }
 
 function isFavorite(name) {
-    return favorites.indexOf(name) != -1;
+    return favorites.includes(name);
 }
 
 // Récupérer les données des Pokémon
 async function fetchPokemon() {
     try {
         let response = await fetch(url);
-        if (response.ok == false) {
-            throw new Error("Erreur lors de la récupération des données.");
-        }
+        if (!response.ok) throw new Error("Erreur lors de la récupération des données.");
 
         let data = await response.json();
         let pokemonDetails = [];
 
-        for (let i = 0; i < data.results.length; i++) {
-            let detailsResponse = await fetch(data.results[i].url);
+        for (let item of data.results) {
+            let detailsResponse = await fetch(item.url);
             let details = await detailsResponse.json();
 
             let pokemon = {
                 name: details.name,
                 image: details.sprites.front_default,
                 weight: details.weight,
-                types: []
+                types: details.types.map(t => t.type.name),
             };
 
-            for (let j = 0; j < details.types.length; j++) {
-                pokemon.types[pokemon.types.length] = details.types[j].type.name;
-            }
-
-            pokemonDetails[pokemonDetails.length] = pokemon;
+            pokemonDetails.push(pokemon);
         }
 
         allPokemon = pokemonDetails;
+        populateSelect(); // Appel pour remplir le `<select>`
         displayPokemon();
     } catch (error) {
         console.error("Erreur:", error);
         pokemonContainer.innerHTML = "<p class='error'>Impossible de charger les données.</p>";
     }
 }
+
 fetchPokemon();
+
+// Remplir le select avec les noms des Pokémon
+function populateSelect() {
+    pokemonSelect.innerHTML = '<option value="">-- Sélectionner un Pokémon --</option>';
+    allPokemon.forEach(pokemon => {
+        let option = document.createElement("option");
+        option.value = pokemon.name;
+        option.textContent = pokemon.name;
+        pokemonSelect.appendChild(option);
+    });
+}
 
 // Affichage des Pokémon avec filtres et tri
 function displayPokemon() {
     pokemonContainer.innerHTML = "";
-    let copy = [];
-    
-    for (let i = 0; i < allPokemon.length; i++) {
-        copy[copy.length] = allPokemon[i];
-    }
+    let copy = [...allPokemon];
 
     // Filtrer par nom et type
-    if (filter != "") {
-        let filteredCopy = [];
-        for (let i = 0; i < copy.length; i++) {
-            if (copy[i].name.toLowerCase().indexOf(filter.toLowerCase()) != -1) {
-                filteredCopy[filteredCopy.length] = copy[i];
-            }
-        }
-        copy = filteredCopy;
+    if (filter) {
+        copy = copy.filter(pokemon => pokemon.name.toLowerCase().includes(filter.toLowerCase()));
     }
 
-    if (selectValue != "") {
-        let filteredCopy = [];
-        for (let i = 0; i < copy.length; i++) {
-            if (copy[i].types.indexOf(selectValue) != -1) {
-                filteredCopy[filteredCopy.length] = copy[i];
-            }
-        }
-        copy = filteredCopy;
+    if (selectValue) {
+        copy = copy.filter(pokemon => pokemon.types.includes(selectValue));
     }
 
     // Tri
-    if (sortMethod == "az") {
-        copy.sort((a, b) => a.name.localeCompare(b.name));
-    }
-    if (sortMethod == "za") {
-        copy.sort((a, b) => b.name.localeCompare(a.name));
-    }
-    if (sortMethod == "weightAsc") {
-        copy.sort((a, b) => a.weight - b.weight);
-    }
-    if (sortMethod == "weightDesc") {
-        copy.sort((a, b) => b.weight - a.weight);
+    switch (sortMethod) {
+        case "az":
+            copy.sort((a, b) => a.name.localeCompare(b.name));
+            break;
+        case "za":
+            copy.sort((a, b) => b.name.localeCompare(a.name));
+            break;
+        case "weightAsc":
+            copy.sort((a, b) => a.weight - b.weight);
+            break;
+        case "weightDesc":
+            copy.sort((a, b) => b.weight - a.weight);
+            break;
     }
 
     // Afficher les Pokémon
@@ -139,13 +130,29 @@ function displayPokemon() {
     }
 }
 
+// Fonction de réinitialisation
+document.getElementById("resetFilter").addEventListener("click", () => {
+    filter = ""; // Réinitialiser la recherche
+    selectValue = ""; // Réinitialiser le filtre type
+    sortMethod = ""; // Réinitialiser le tri
+    displayLimit = 12; // Remettre la limite d'affichage par défaut
+
+    // Réinitialiser les champs et boutons
+    searchInput.value = ""; 
+    pokemonSelect.value = ""; 
+    typeFilter.value = ""; 
+    displayRange.value = displayLimit;
+    rangeValue.textContent = displayLimit;
+
+    displayPokemon(); // Rafraîchir l'affichage
+});
+
+
+
 // Mode Nuit
 toggleThemeBtn.addEventListener("click", () => {
     document.body.classList.toggle("dark-mode");
-    let cards = document.getElementsByClassName("pokemon-card");
-    for (let i = 0; i < cards.length; i++) {
-        cards[i].classList.toggle("dark-mode");
-    }
+    document.querySelectorAll(".pokemon-card").forEach(card => card.classList.toggle("dark-mode"));
     localStorage.setItem("theme", document.body.classList.contains("dark-mode") ? "dark" : "light");
 });
 
@@ -156,22 +163,24 @@ sortWeightAsc.addEventListener("click", () => { sortMethod = "weightAsc"; displa
 sortWeightDesc.addEventListener("click", () => { sortMethod = "weightDesc"; displayPokemon(); });
 typeFilter.addEventListener("change", (e) => { selectValue = e.target.value; displayPokemon(); });
 searchInput.addEventListener("input", (e) => { filter = e.target.value; displayPokemon(); });
+pokemonSelect.addEventListener("change", (e) => { filter = e.target.value; displayPokemon(); });
 
 // Barre de réglage du nombre de Pokémon affichés
 displayRange.addEventListener("input", (e) => {
     displayLimit = e.target.value;
-    rangeValue.innerHTML = displayLimit;
+    rangeValue.textContent = displayLimit;
     displayPokemon();
 });
 
 // Sauvegarde du mode nuit
 document.addEventListener("DOMContentLoaded", () => {
-    if (localStorage.getItem("theme") == "dark") {
+    if (localStorage.getItem("theme") === "dark") {
         document.body.classList.add("dark-mode");
-        let cards = document.getElementsByClassName("pokemon-card");
-        for (let i = 0; i < cards.length; i++) {
-            cards[i].classList.add("dark-mode");
-        }
+        document.querySelectorAll(".pokemon-card").forEach(card => card.classList.add("dark-mode"));
     }
 });
+
+
+
+
 
